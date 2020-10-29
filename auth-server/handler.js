@@ -82,6 +82,7 @@ module.exports.getCalendarEvents = async (event) => {
     })
     .catch((err) => {
       console.error(err);
+      conso;
       return {
         statusCode: 500,
         headers: {

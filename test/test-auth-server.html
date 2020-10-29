@@ -57,11 +57,9 @@
       getURLElement.onclick = function () {
         fetch(getAuthURL)
           .then(function (response) {
-            console.log(response);
             return response.json();
           })
           .then(function (json) {
-            console.log(json);
             const result = JSON.stringify(json);
             // we get the value of authUrl
             const { authUrl } = JSON.parse(result);
@@ -81,14 +79,11 @@
       getAccessToken.onclick = function () {
         const code = codeValue.value.replace('/', '%2F');
         const getTokenRequest = getToken + code;
-        console.log(codeValue.value);
         fetch(getTokenRequest)
           .then(function (response) {
-            console.log(response);
             return response.json();
           })
           .then(function (json) {
-            console.log(json);
             accessTokenElement.innerText = JSON.stringify(json);
           });
       };
