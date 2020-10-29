@@ -40,11 +40,14 @@ module.exports.getAuthURL = async () => {
   };
 };
 
-module.exports.getCalendarEvents = async () => {
+module.exports.getCalendarEvents = async (event) => {
   const oAuth2Client = new google.auth.OAuth2(
     client_id,
     client_secret,
     redirect_uris[0]
+  );
+  const access_token = decodeURIComponent(
+    `${event.pathParameters.access_token}`
   );
   oAuth2Client.setCredentials({ access_token });
 

@@ -44,6 +44,7 @@
       <button id="getEvents">Get Events</button>
       <p id="events"></p>
     </main>
+
     <script type="text/javascript">
       // --------------------- STEP 1
       const getURLElement = document.getElementById('getURL');
@@ -56,9 +57,11 @@
       getURLElement.onclick = function () {
         fetch(getAuthURL)
           .then(function (response) {
+            console.log(response);
             return response.json();
           })
           .then(function (json) {
+            console.log(json);
             const result = JSON.stringify(json);
             // we get the value of authUrl
             const { authUrl } = JSON.parse(result);
@@ -73,15 +76,19 @@
       const getAccessToken = document.getElementById('getToken');
       const accessTokenElement = document.getElementById('accessToken');
       const getToken =
-        'https://30bf329ybh.execute-api.us-west-1.amazonaws.com/dev/api/token/{code}';
+        'https://30bf329ybh.execute-api.us-west-1.amazonaws.com/dev/api/token/';
 
       getAccessToken.onclick = function () {
-        const getTokenRequest = getToken + codeValue.value;
+        const code = codeValue.value.replace('/', '%2F');
+        const getTokenRequest = getToken + code;
+        console.log(codeValue.value);
         fetch(getTokenRequest)
           .then(function (response) {
+            console.log(response);
             return response.json();
           })
           .then(function (json) {
+            console.log(json);
             accessTokenElement.innerText = JSON.stringify(json);
           });
       };
@@ -89,13 +96,16 @@
       const getEvents = document.getElementById('getEvents');
       const events = document.getElementById('events');
       const getCalendarEvents =
-        'https://30bf329ybh.execute-api.us-west-1.amazonaws.com/dev/api/get-events/{access_token}';
+        'https://30bf329ybh.execute-api.us-west-1.amazonaws.com/dev/api/get-events/';
 
       getEvents.onclick = function () {
         const { access_token } = JSON.parse(accessTokenElement.innerText);
+        console.log(access_token);
         const eventRequest = getCalendarEvents + access_token;
+        console.log(eventRequest);
         fetch(eventRequest)
           .then(function (response) {
+            console.log(response);
             return response.json();
           })
           .then(function (json) {
