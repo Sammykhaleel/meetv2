@@ -32,6 +32,7 @@ module.exports.getAuthURL = async () => {
     statusCode: 200,
     headers: {
       'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
     },
     body: JSON.stringify({
       authUrl: authUrl,
@@ -66,13 +67,14 @@ module.exports.getCalendarEvents = async () => {
       }
     );
   })
-    .then((events) => {
+    .then((response) => {
       return {
         statusCode: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
         },
-        body: JSON.stringify({ events: events.data.items }),
+        body: JSON.stringify({ events: response.data.items }),
       };
     })
     .catch((err) => {
@@ -81,6 +83,7 @@ module.exports.getCalendarEvents = async () => {
         statusCode: 500,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
         },
         body: JSON.stringify(err),
       };
@@ -108,6 +111,7 @@ module.exports.getAccessToken = async (event) => {
         statusCode: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
         },
         body: JSON.stringify(token),
       };
@@ -118,6 +122,7 @@ module.exports.getAccessToken = async (event) => {
         statusCode: 500,
         headers: {
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
         },
         body: JSON.stringify(err),
       };
