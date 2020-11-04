@@ -1,20 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Event from '../Event';
+import { mockData } from '../mock-data';
 
 describe('Event component', () => {
   let EventWrapper;
   beforeAll(() => {
-    EventWrapper = shallow(<Event />);
+    EventWrapper = shallow(<Event event={mockData[0]} />);
   });
 
-  test("render event's info", () => {
-    expect(EventWrapper.find('.summary')).toHaveLength(1);
-    expect(EventWrapper.find('.startDateTime')).toHaveLength(1);
-    expect(EventWrapper.find('.location')).toHaveLength(1);
-    expect(EventWrapper.find('.detailInfo')).toHaveLength(1);
-    expect(EventWrapper.find('.eventLink')).toHaveLength(1);
-    expect(EventWrapper.find('.description')).toHaveLength(1);
+  test('render event', () => {
+    expect(EventWrapper.find('.event')).toHaveLength(1);
   });
 
   test('render show detail button', () => {
@@ -25,6 +21,8 @@ describe('Event component', () => {
     EventWrapper.find('.showDetails').at(0).simulate('click');
     expect(EventWrapper.find('.detailInfo').hasClass('show')).toEqual(true);
     EventWrapper.find('.showDetails').at(0).simulate('click');
-    expect(EventWrapper.find('.detailInfo').hasClass('hide')).toEqual(true);
+    expect(EventWrapper.find('.detailInfo').hasClass('display-none')).toEqual(
+      true
+    );
   });
 });

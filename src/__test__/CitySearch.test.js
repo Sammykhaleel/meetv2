@@ -9,21 +9,25 @@ const locations = extractLocations(mockData);
 describe('CitySearch component', () => {
   let CitySearchWrapper;
   beforeAll(() => {
-    CitySearchWrapper = shallow(<CitySearch locations={locations} />);
+    CitySearchWrapper = shallow(
+      <CitySearch locations={locations} updateEvents={() => {}} />
+    );
   });
   test('render text input', () => {
-    expect(CitySearchWrapper.find('.city')).toHaveLength(1);
+    expect(CitySearchWrapper.find('.citySearchInput')).toHaveLength(1);
   });
 
   test('render text input correctly', () => {
     const query = CitySearchWrapper.state('query');
-    expect(CitySearchWrapper.find('.city').prop('value')).toBe(query);
+    expect(CitySearchWrapper.find('.citySearchInput').prop('value')).toBe(
+      query
+    );
   });
 
   test('change state when text input changes', () => {
     // Same as event.target.value
     const eventObject = { target: { value: 'Berlin' } };
-    CitySearchWrapper.find('.city').simulate('change', eventObject);
+    CitySearchWrapper.find('.citySearchInput').simulate('change', eventObject);
     expect(CitySearchWrapper.state('query')).toBe('Berlin');
   });
 
@@ -38,7 +42,7 @@ describe('CitySearch component', () => {
     );
     for (let i = 0; i < suggestions.length; i += 1) {
       expect(CitySearchWrapper.find('.suggestions li').at(i).text()).toBe(
-        suggestions[i].name_string
+        suggestions[i]
       );
     }
   });
@@ -47,5 +51,48 @@ describe('CitySearch component', () => {
     CitySearchWrapper.setState({ suggestions: locations });
     CitySearchWrapper.find('.suggestions li').at(1).simulate('click');
     expect(CitySearchWrapper.state('query')).toBe('Berlin, Germany');
+  });
+
+  describe('<CitySearch /> integration', () => {
+    test('get a list of cities when the user searches for Berlin', () => {
+      const CitySearchWrapper = shallow(<CitySearch locations={locations} />);
+      CitySearchWrapper.find('.citySearchInput').simulate('change', {
+        target: { value: 'Berlin' },
+      });
+      expect(CitySearchWrapper.state('suggestions')).toEqual([
+        'Berlin, Germany',
+      ]);
+    });
+
+    test('renders a list of suggestions correctly', () => {
+      const CitySearchWrapper = shallow(
+        <CitySearch updateEvents={() => {}} locations={locations} />
+      );
+      CitySearchWrapper.find('.citySearchInput').simulate('change', {
+        target: {
+          value: 'Berlin',
+        },
+      });
+      expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(1);
+      CitySearchWrapper.find('.suggestions li').at(0).simulate('click');
+      expect(CitySearchWrapper.state('query')).toBe('Berlin, Germany');
+      expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(0);
+    });
+
+    test('selecting a suggestion should change query state', () => {
+      const CitySearchWrapper = shallow(
+        <CitySearch updateEvents={() => {}} locations={locations} />
+      );
+      CitySearchWrapper.setState({
+        suggestions: locations,
+      });
+      CitySearchWrapper.find('.citySearchInput').simulate('change', {
+        target: {
+          value: 'London',
+        },
+      });
+      CitySearchWrapper.find('.suggestions li').at(0).simulate('click');
+      expect(CitySearchWrapper.state('query')).toBe('London, UK');
+    });
   });
 });

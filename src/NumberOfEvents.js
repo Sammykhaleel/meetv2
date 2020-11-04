@@ -2,24 +2,26 @@ import React, { Component } from 'react';
 
 class NumberOfEvents extends Component {
   state = {
-    numberOfEvents: 0,
+    numberOfEvents: 32,
   };
 
-  submitNumber = () => {
-    this.setState({ numberOfEvents: 1 });
+  submitNumber = (event) => {
+    const value = event.target.value;
+    this.props.updateEvents(null, value);
+    this.setState({ numberOfEvents: value });
   };
 
   render() {
     return (
-      <form className='numberOfEvent'>
-        <label for='numberInput'>Number of events to show</label>
-        <input type='text' id='numberInput'></input>
+      <div className='numberOfEvents'>
+        <label>Number of Events: </label>
         <input
-          className='numberSubmit'
-          type='submit'
-          value='Submit'
-          onClick={this.submitNumber}></input>
-      </form>
+          type='text'
+          className='numberInput'
+          value={this.state.numberOfEvents}
+          onChange={this.submitNumber}
+        />
+      </div>
     );
   }
 }

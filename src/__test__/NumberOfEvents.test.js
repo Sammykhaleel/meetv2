@@ -5,15 +5,17 @@ import NumberOfEvents from '../NumberOfEvents';
 describe('NumberOfEvent component', () => {
   let NumberOfEventsWrapper;
   beforeAll(() => {
-    NumberOfEventsWrapper = shallow(<NumberOfEvents />);
+    NumberOfEventsWrapper = shallow(<NumberOfEvents updateEvents={() => {}} />);
   });
   test('render NumberOfEvent input form', () => {
-    expect(NumberOfEventsWrapper.find('.numberOfEvent')).toHaveLength(1);
-    expect(NumberOfEventsWrapper.find('#numberInput')).toHaveLength(1);
-    expect(NumberOfEventsWrapper.find('.numberSubmit')).toHaveLength(1);
+    expect(NumberOfEventsWrapper.find('.numberOfEvents')).toHaveLength(1);
+    expect(NumberOfEventsWrapper.find('.numberInput')).toHaveLength(1);
   });
   test('enter and submitting number change numberOfEvents state', () => {
-    NumberOfEventsWrapper.find('.numberSubmit').at(0).simulate('click');
-    expect(NumberOfEventsWrapper.state('numberOfEvents')).toBe(1);
+    const eventObject = { target: { value: 32 } };
+    NumberOfEventsWrapper.find('.numberInput')
+      .at(0)
+      .simulate('change', eventObject);
+    expect(NumberOfEventsWrapper.state('numberOfEvents')).toBe(32);
   });
 });
