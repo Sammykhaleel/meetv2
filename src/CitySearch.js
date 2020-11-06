@@ -31,14 +31,12 @@ class CitySearch extends Component {
 
   render() {
     return (
-      <div className='CitySearch'>
+      <div className="CitySearch">
         <div>
           <input
-            id='outlined-basic'
-            variant='outlined'
-            label='City name'
-            type='text'
-            className='citySearchInput'
+            label="City name"
+            type="text"
+            className="citySearchInput"
             value={this.state.query}
             onChange={this.handleInputChanged}
           />
@@ -48,21 +46,19 @@ class CitySearch extends Component {
                 ? 'suggestions showSuggestions'
                 : 'display-none'
             }
-            spacing={2}
-            justify='center'>
+          >
             {this.state.suggestions.map((suggestion) => (
               <li
+                className="suggestionCity"
                 key={suggestion}
-                onClick={() => this.handleItemClicked(suggestion)}>
+                onClick={() => this.handleItemClicked(suggestion)}
+              >
                 {suggestion}
               </li>
             ))}
-            <button
-              onClick={() => {
-                this.handleItemClicked('all');
-              }}>
+            <li onClick={() => this.handleItemClicked('all')}>
               <b>See all cities</b>
-            </button>
+            </li>
           </ul>
         </div>
       </div>

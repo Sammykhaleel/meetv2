@@ -38,7 +38,7 @@ describe('CitySearch component', () => {
   test('render list of suggestions correctly', () => {
     const suggestions = CitySearchWrapper.state('suggestions');
     expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(
-      suggestions.length
+      suggestions.length + 1
     );
     for (let i = 0; i < suggestions.length; i += 1) {
       expect(CitySearchWrapper.find('.suggestions li').at(i).text()).toBe(
@@ -73,7 +73,7 @@ describe('CitySearch component', () => {
           value: 'Berlin',
         },
       });
-      expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(1);
+      expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(2);
       CitySearchWrapper.find('.suggestions li').at(0).simulate('click');
       expect(CitySearchWrapper.state('query')).toBe('Berlin, Germany');
       expect(CitySearchWrapper.find('.suggestions li')).toHaveLength(0);

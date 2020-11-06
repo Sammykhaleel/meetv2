@@ -19,10 +19,8 @@ describe('Event component', () => {
 
   test('show/hide detail info when clicked show details button', () => {
     EventWrapper.find('.showDetails').at(0).simulate('click');
-    expect(EventWrapper.find('.detailInfo').hasClass('show')).toEqual(true);
+    expect(EventWrapper.find('.detailInfo')).toHaveLength(1);
     EventWrapper.find('.showDetails').at(0).simulate('click');
-    expect(EventWrapper.find('.detailInfo').hasClass('display-none')).toEqual(
-      true
-    );
+    expect(EventWrapper.find('.detailInfo')).toHaveLength(0);
   });
 });

@@ -15,7 +15,6 @@ class App extends Component {
   };
 
   updateEvents = (location, eventCount) => {
-    console.log('update events token valid: ', this.state.tokenCheck);
     const { currentLocation, numberOfEvents } = this.state;
     if (location) {
       getEvents().then((response) => {
@@ -66,7 +65,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className='App'>
+      <div className="App">
         <NumberOfEvents
           updateEvents={this.updateEvents}
           numberOfEvents={this.state.numberOfEvents}
