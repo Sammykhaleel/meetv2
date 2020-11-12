@@ -131,6 +131,11 @@ input[type='number'] {
 .Alert {
   position: fixed;
   top: 20px;
+  position: fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  z-index: 100;
 }
 
 .data-vis-wrapper {
