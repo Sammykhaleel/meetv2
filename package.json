@@ -6,8 +6,8 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
+    "@testing-library/react": "^11.1.2",
+    "@testing-library/user-event": "^12.2.2",
     "atatus-spa": "^4.2.1",
     "axios": "^0.21.0",
     "nprogress": "^0.2.0",

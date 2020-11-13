@@ -2,9 +2,12 @@ import { mockData } from './mock-data';
 import axios from 'axios';
 import NProgress from 'nprogress';
 
+console.log('getEvents token: ');
+
 export const extractLocations = (events) => {
   var extractLocations = events.map((event) => event.location);
   var locations = [...new Set(extractLocations)];
+  console.log(locations);
   return locations;
 };
 
@@ -16,8 +19,17 @@ export const getEvents = async () => {
     return { events: mockData, locations: extractLocations(mockData) };
   }
 
-  const token = await getAccessToken();
+  if (!navigator.onLine) {
+    const events = localStorage.getItem('lastEvents');
+    NProgress.done();
+    return {
+      events: JSON.parse(events).events,
+      locations: extractLocations(JSON.parse(events).events),
+    };
+  }
 
+  const token = await getAccessToken();
+  console.log('getEvents token: ', token);
   if (token) {
     removeQuery();
     const url = `https://30bf329ybh.execute-api.us-west-1.amazonaws.com/dev/api/get-events/${token}`;
@@ -32,11 +44,11 @@ export const getEvents = async () => {
   }
 };
 
-const getAccessToken = async () => {
+export const getAccessToken = async () => {
   const accessToken = localStorage.getItem('access_token');
   const tokenCheck = accessToken && (await checkToken(accessToken));
-
-  if (!accessToken || tokenCheck.error) {
+  console.log('getaccesstoken');
+  if (!accessToken || !tokenCheck) {
     await localStorage.removeItem('access_token');
     const searchParams = new URLSearchParams(window.location.search);
     const code = await searchParams.get('code');
@@ -52,17 +64,17 @@ const getAccessToken = async () => {
   return accessToken;
 };
 
-const checkToken = async (accessToken) => {
+export const checkToken = async (accessToken) => {
   const result = await fetch(
-    `https://30bf329ybh.execute-api.us-west-1.amazonaws.com/dev/api/token/${accessToken}`
+    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
   )
     .then((res) => res.json())
     .catch((error) => error.json());
 
-  return result;
+  return result.error ? false : true;
 };
 
-const removeQuery = () => {
+export const removeQuery = () => {
   if (window.history.pushState && window.location.pathname) {
     var newurl =
       window.location.protocol +
@@ -76,7 +88,8 @@ const removeQuery = () => {
   }
 };
 
-const getToken = async (code) => {
+export const getToken = async (code) => {
+  removeQuery();
   const encodeCode = encodeURIComponent(code);
   const { access_token } = await fetch(
     `https://30bf329ybh.execute-api.us-west-1.amazonaws.com/dev/api/token/${encodeCode}`
