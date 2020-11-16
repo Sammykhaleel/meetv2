@@ -3,8 +3,18 @@ import './App.css';
 import EventList from './EventList';
 import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
+import EventGenre from './EventGenre';
 import { getEvents } from './api';
 import './nprogress.css';
+import {
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 
 class App extends Component {
   state = {
@@ -12,6 +22,17 @@ class App extends Component {
     currentLocation: 'all',
     locations: [],
     numberOfEvents: 32,
+  };
+
+  getData = () => {
+    const { locations, events } = this.state;
+    const data = locations.map((location) => {
+      const number = events.filter((event) => event.location === location)
+        .length;
+      const city = location.split(', ').shift();
+      return { city, number };
+    });
+    return data;
   };
 
   updateEvents = (location, eventCount) => {
@@ -64,6 +85,8 @@ class App extends Component {
   }
 
   render() {
+    const data = this.getData().sort((a, b) => (a.city > b.city ? 1 : -1));
+
     return (
       <div className="App">
         <CitySearch
@@ -74,6 +97,32 @@ class App extends Component {
           updateEvents={this.updateEvents}
           numberOfEvents={this.state.numberOfEvents}
         />
+        <div className="data-vis-wrapper">
+          <ResponsiveContainer height={400}>
+            <EventGenre events={this.state.events} />
+          </ResponsiveContainer>
+          <ResponsiveContainer height={400}>
+            <ScatterChart
+              margin={{
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20,
+              }}
+            >
+              <CartesianGrid />
+              <XAxis type="category" dataKey="city" name="City" />
+              <YAxis
+                type="number"
+                dataKey="number"
+                name="Number of events"
+                allowDecimals={false}
+              />
+              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+              <Scatter data={data} fill="#8884d8" />
+            </ScatterChart>
+          </ResponsiveContainer>
+        </div>
         <EventList events={this.state.events} />
       </div>
     );

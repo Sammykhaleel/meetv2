@@ -55,6 +55,7 @@ class CitySearch extends Component {
       <div className="CitySearch">
         <InfoAlert className="info" text={this.state.infoText} />
         <WarningAlert className="warning" text={this.state.warningText} />
+        <label>Name of city: </label>
         <div>
           <input
             label="City name"

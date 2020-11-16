@@ -4,6 +4,10 @@
   padding: 5% 5%;
 }
 
+h1 {
+  text-align: center;
+}
+
 .App * {
   box-sizing: border-box;
 }
@@ -130,7 +134,7 @@ input[type='number'] {
 
 .Alert {
   position: fixed;
-  top: 20px;
+  top: 90px;
   position: fixed;
   margin: 0 auto;
   left: 0;

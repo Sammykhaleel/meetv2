@@ -2,12 +2,9 @@ import { mockData } from './mock-data';
 import axios from 'axios';
 import NProgress from 'nprogress';
 
-console.log('getEvents token: ');
-
 export const extractLocations = (events) => {
   var extractLocations = events.map((event) => event.location);
   var locations = [...new Set(extractLocations)];
-  console.log(locations);
   return locations;
 };
 
@@ -29,7 +26,6 @@ export const getEvents = async () => {
   }
 
   const token = await getAccessToken();
-  console.log('getEvents token: ', token);
   if (token) {
     removeQuery();
     const url = `https://30bf329ybh.execute-api.us-west-1.amazonaws.com/dev/api/get-events/${token}`;
@@ -47,7 +43,6 @@ export const getEvents = async () => {
 export const getAccessToken = async () => {
   const accessToken = localStorage.getItem('access_token');
   const tokenCheck = accessToken && (await checkToken(accessToken));
-  console.log('getaccesstoken');
   if (!accessToken || !tokenCheck) {
     await localStorage.removeItem('access_token');
     const searchParams = new URLSearchParams(window.location.search);
